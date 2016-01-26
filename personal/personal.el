@@ -8,7 +8,9 @@
 (disable-theme 'zenburn)
 (load-theme 'solarized-light t)
 
+;; -----------
 ;; Ident style
+;; -----------
 (setq-default inhibit-startup-message t
               font-lock-maximum-decoration t
               visible-bell t
@@ -32,11 +34,6 @@
               uniquify-buffer-name-style 'forward
 	      indent-tabs-mode t)
 
-(add-hook 'html-mode-hook
-	  (lambda()
-	    (setq sgml-basic-offset 8)
-	    (setq indent-tabs-mode t)))
-
 ;; Autoindent on newline
 (define-key global-map (kbd "RET") 'newline-and-indent)
 
@@ -44,33 +41,57 @@
 (global-set-key [remap move-beginning-of-line]
                 'move-beginning-of-line)
 
-;; -------
-;; spotify
-;; -------
-;; (require 'spotify)
 
-;; -------
-;; notmuch
-;; -------
-;;(autoload 'notmuch "notmuch" "notmuch mail" t)
-(require 'notmuch)
-(setq message-send-mail-function 'message-send-mail-with-sendmail)
-(setq mail-host-address "gmail.com")
-(setq user-full-name "Thomas Gummerer")
-(setq user-mail-address "t.gummerer@gmail.com")
+;; ----
+;; html
+;; ----
+(add-hook 'html-mode-hook
+	  (lambda()
+	    (setq sgml-basic-offset 8)
+	    (setq indent-tabs-mode t)))
 
-(require 'notmuch-pick nil t)
+;; ---
+;; xml
+;; ---
+(defun my-xml-hook ()
+  (setq c-tab-always-indent nil
+	tab-width 4
+	indent-tabs-mode nil))
+(add-hook 'nxml-mode-hook 'my-xml-hook)
 
-;; ------------------------------
-;; find file as root if necessary
-;; ------------------------------
+;; ----
+;; java
+;; ----
+(load "~/.emacs.d/personal/custom-java-style.el")
+(add-hook 'java-mode-hook 'custom-set-java-style)
 
-(defadvice ido-find-file (after find-file-sudo activate)
-  "Find file as root if necessary."
-  (unless (and buffer-file-name
-	       (file-writable-p buffer-file-name))
-    (find-alternate-file (concat "/sudo:root@localhost:" buffer-file-name))))
+;; ------
+;; python
+;; ------
 
+(add-hook 'python-mode-hook
+	  (lambda()
+	    (setq tab-width 2)
+	    (setq indent-tabs-mode nil)))
+
+;; ----
+;; perl
+;; ----
+(setq-default cperl-indent-level 8
+	      cperl-close-paren-offset -8
+	      cperl-continued-statement-offset 8
+	      cperl-indent-parens-as-block t
+	      cperl-tab-always-indent t
+	      tab-width 8)
+
+;; -----
+;; shell
+;; -----
+
+(add-hook 'sh-mode-hook
+	  (lambda ()
+	    (setq sh-basic-offset 8
+		  indent-tabs-mode t)))
 
 ;; -------
 ;; Haskell
@@ -117,3 +138,7 @@
 (require 'smart-mode-line)
 (sml/setup)
 (sml/apply-theme 'automatic)
+
+(setq system-uses-terminfo nil)
+
+(global-set-key (kbd "M-p") 'ace-window)
