@@ -142,3 +142,8 @@
 (setq system-uses-terminfo nil)
 
 (global-set-key (kbd "M-p") 'ace-window)
+
+;; -------
+;; notmuch
+;; -------
+(require 'notmuch)
